@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MOHILC.3D — Interactive Pixel-Art GitHub Portfolio</title>
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=JetBrains+Mono:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="app">
+      <canvas id="webgl-canvas" aria-label="Interactive 3D Pixel Art Portfolio"></canvas>
+
+      <!-- Top Retro HUD -->
+      <header id="hud-top" class="pixel-panel">
+        <div class="hud-brand">
+          <img
+            id="hud-avatar-photo"
+            class="hud-avatar-photo"
+            src="https://avatars.githubusercontent.com/u/176016365?v=4"
+            referrerpolicy="no-referrer"
+            alt="Mohilc Profile Photo"
+          />
+          <span class="pixel-badge" id="hud-room-badge">GARDEN PATIO</span>
+          <div class="hud-title-group">
+            <h1 class="hud-title" id="hud-portfolio-title">MOHILC.3D</h1>
+            <span class="hud-subtitle" id="hud-github-status">SYNCING GITHUB...</span>
+          </div>
+        </div>
+
+        <nav class="hud-rooms" aria-label="Room & City Quick Teleport">
+          <button class="pixel-btn room-btn" data-room="patio" title="Garden Patio (1)">1. PATIO</button>
+          <button class="pixel-btn room-btn" data-room="living" title="Living Lounge (2)">2. LOUNGE</button>
+          <button class="pixel-btn room-btn" data-room="study" title="Study & Library (3)">3. LIBRARY</button>
+          <button class="pixel-btn room-btn" data-room="lab" title="AI & Robotics Lab (4)">4. AI LAB</button>
+          <button class="pixel-btn room-btn" data-room="arcade" title="Arcade Den (5)">5. ARCADE</button>
+          <button class="pixel-btn room-btn" data-room="city-plaza" title="City Fountain Plaza (6)">6. CITY</button>
+          <button class="pixel-btn room-btn" data-room="byte-cafe" title="Byte Cafe & Campus (7)">7. CAFÉ</button>
+          <button class="pixel-btn room-btn" data-room="city-park" title="Sports Park & Neighborhood (8)">8. PARK</button>
+        </nav>
+
+        <div class="hud-actions">
+          <button class="pixel-btn" id="btn-env-toggle" title="Toggle Day / Sunset / Night (L)">
+            <span id="env-icon">☀</span> <span id="env-label">DAY</span>
+          </button>
+          <button class="pixel-btn" id="btn-camera-toggle" title="Toggle Isometric / First-Person (V)">
+            <span id="cam-label">ISO</span>
+          </button>
+          <button class="pixel-btn" id="btn-pixel-toggle" title="Cycle Retro Pixel Resolution (P)">
+            <span id="pixel-label">1X PX</span>
+          </button>
+          <button class="pixel-btn" id="btn-avatar-modal" title="Customize Avatar (C)">
+            AVATAR
+          </button>
+          <button class="pixel-btn" id="btn-github-modal" title="Switch GitHub Repo / User (G)">
+            GITHUB
+          </button>
+          <button class="pixel-btn" id="btn-sound-toggle" title="Toggle 8-bit Audio (M)">
+            SFX ON
+          </button>
+        </div>
+      </header>
+
+      <!-- Click-to-Lock / Controls Helper Banner -->
+      <div id="pointer-lock-banner" class="pixel-panel">
+        <span id="pointer-status-dot" class="status-dot"></span>
+        <span id="pointer-status-text">
+          CLICK VIEWPORT FOR POINTER LOCK · WASD MOVE · SPACE JUMP · KICK PROPS · E INTERACT
+        </span>
+        <button class="pixel-btn small" id="btn-lock-pointer">LOCK MOUSE</button>
+      </div>
+
+      <!-- Proximity Interaction Prompt -->
+      <div id="proximity-prompt" class="pixel-panel hidden" role="status" aria-live="polite">
+        <div class="prompt-key">E</div>
+        <div class="prompt-meta">
+          <div class="prompt-title" id="prompt-title">BOOKSHELF</div>
+          <div class="prompt-desc" id="prompt-desc">Inspect GitHub Repositories</div>
+        </div>
+        <button class="pixel-btn accent small" id="btn-open-trigger">OPEN</button>
+      </div>
+
+      <!-- Bottom Left Minimap / Perf Telemetry -->
+      <aside id="hud-bottom-left" class="pixel-panel">
+        <div class="perf-row">
+          <span>FPS: <strong id="perf-fps">60</strong></span>
+          <span>CALLS: <strong id="perf-calls">0</strong></span>
+          <span>TEX: <strong id="perf-tex">1</strong></span>
+          <span>POOL: <strong id="perf-pool">0/0</strong></span>
+        </div>
+      </aside>
+
+      <!-- Interactive Context Drawer (GitHub Details, Media, Mini-Games, Settings) -->
+      <section id="interactive-drawer" class="pixel-panel hidden" aria-modal="true" role="dialog">
+        <div class="drawer-header">
+          <div>
+            <span class="pixel-badge small" id="drawer-room-tag">STUDY</span>
+            <h2 id="drawer-title">PROJECT EXPLORER</h2>
+          </div>
+          <button class="pixel-btn danger small" id="btn-close-drawer" title="Close (Esc / E)">✕ CLOSE</button>
+        </div>
+        <div id="drawer-body" class="drawer-body"></div>
+      </section>
+
+      <!-- Avatar Customization Modal -->
+      <section id="avatar-modal" class="pixel-panel modal hidden" aria-modal="true" role="dialog">
+        <div class="drawer-header">
+          <div>
+            <span class="pixel-badge small">WARDROBE STATE</span>
+            <h2>CUSTOMIZE PIXEL AVATAR</h2>
+          </div>
+          <button class="pixel-btn danger small" id="btn-close-avatar">✕</button>
+        </div>
+        <div id="avatar-modal-body" class="drawer-body"></div>
+      </section>
+
+      <!-- GitHub Repository / Username Connector Modal -->
+      <section id="github-modal" class="pixel-panel modal hidden" aria-modal="true" role="dialog">
+        <div class="drawer-header">
+          <div>
+            <span class="pixel-badge small">GITHUB API LINK</span>
+            <h2>CONNECT GITHUB PORTFOLIO</h2>
+          </div>
+          <button class="pixel-btn danger small" id="btn-close-github">✕</button>
+        </div>
+        <div id="github-modal-body" class="drawer-body"></div>
+      </section>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

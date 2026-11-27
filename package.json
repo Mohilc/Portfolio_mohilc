@@ -1,0 +1,20 @@
+{
+  "name": "pixel-3d-github-portfolio",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Interactive 3D Pixel Art Portfolio built with Three.js and dynamically populated from GitHub",
+  "scripts": {
+    "dev": "vite --port 5173 --strictPort",
+    "build": "vite build",
+    "preview": "vite preview --port 4173",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "three": "^0.172.0"
+  },
+  "devDependencies": {
+    "vite": "^6.2.0",
+    "vitest": "^3.0.8"
+  }
+}
