@@ -130,6 +130,27 @@ export class InteractiveDrawer {
       case 'hackathons':
         this.renderHackathons(gh);
         break;
+      case 'agri_eco':
+        this.renderRepoBucket(
+          gh,
+          'agriEco',
+          'AgriVision AI Crop Intelligence, Munnar Tourism, Earth Bloom & Onam Pookalam Builds'
+        );
+        break;
+      case 'cafe_food':
+        this.renderRepoBucket(
+          gh,
+          'cafeFood',
+          'Hoshiko Web, Food-Order UI, EmojiStories & House-Price ML Predictor'
+        );
+        break;
+      case 'space_vision':
+        this.renderRepoBucket(
+          gh,
+          'spaceVision',
+          'LoopTroop NASA Space Apps 2025, VisionSafe AI Road Safety & VisionAid Safety Agent'
+        );
+        break;
       case 'environment_panel':
         this.renderEnvironmentPanel(state.environment);
         break;
@@ -536,6 +557,38 @@ export class InteractiveDrawer {
         soundService.playTone(Number(btn.dataset.note), 0.16, 'square', 0.05);
       });
     });
+  }
+
+  renderRepoBucket(gh, bucketKey, subtitle) {
+    const items = categorizeRepos(gh.repos)[bucketKey] || [];
+    this.bodyEl.innerHTML = `
+      <div class="hack-panel">
+        <p class="hint-text">${escapeHtml(subtitle)}</p>
+        <div class="chip-grid">
+          ${items
+            .map(
+              (r) => `
+            <div class="repo-card">
+              <div class="repo-card-top">
+                <strong>${escapeHtml(r.name)}</strong>
+                <span class="pixel-badge small">${escapeHtml(r.language || 'Web')}</span>
+              </div>
+              <p>${escapeHtml(r.description || 'Repository in @' + gh.username)}</p>
+              <div class="detail-actions" style="margin-top:8px">
+                <a class="pixel-btn accent small" href="${escapeHtml(r.html_url)}" target="_blank" rel="noopener noreferrer">GITHUB ↗</a>
+                ${
+                  r.homepage
+                    ? `<a class="pixel-btn small" href="${escapeHtml(r.homepage)}" target="_blank" rel="noopener noreferrer">LIVE DEMO ↗</a>`
+                    : ''
+                }
+              </div>
+            </div>
+          `
+            )
+            .join('')}
+        </div>
+      </div>
+    `;
   }
 
   renderEnvironmentPanel(env) {

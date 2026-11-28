@@ -68,6 +68,11 @@ export const TILES = {
   SIGN_TECH_HUB: [4, 6],
   FENCE_WHITE: [5, 6],
   CAR_BODY: [6, 6],
+  POOKALAM_TILE: [7, 6],
+
+  TEA_CROP: [0, 7],
+  SPACE_DOME: [1, 7],
+  HEARTH_FIRE: [2, 7],
 };
 
 function makeRand(seed) {
@@ -476,6 +481,32 @@ export function createPixelTextureAtlas() {
 
   drawTileBase(...TILES.CAR_BODY, '#ef4444', 0.22, 0.45, 0.7);
   px(ctx, ...TILES.CAR_BODY, 4, 4, '#93c5fd', 24, 10, { h: 0.5, r: 0.08, m: 0.2 });
+
+  // Kerala Onam Pookalam Floral Mosaic (mohil-c-mbc-pookalam-24)
+  drawTileBase(...TILES.POOKALAM_TILE, '#fef08a', 0.85, 0.0, 0.6);
+  px(ctx, ...TILES.POOKALAM_TILE, 2, 2, '#f97316', 28, 28, { h: 0.7 });
+  px(ctx, ...TILES.POOKALAM_TILE, 6, 6, '#ec4899', 20, 20, { h: 0.76 });
+  px(ctx, ...TILES.POOKALAM_TILE, 10, 10, '#22c55e', 12, 12, { h: 0.8 });
+  px(ctx, ...TILES.POOKALAM_TILE, 13, 13, '#facc15', 6, 6, { h: 0.88 });
+
+  // === ROW 7: Tea / AgriVision Crops, NASA Space Dome, Living Hearth ===
+  paintNoiseTile(...TILES.TEA_CROP, ['#15803d', '#22c55e', '#4ade80', '#166534'], 801, 0.88, 0.0, [0.35, 0.9]);
+  for (let y = 4; y < 30; y += 8) {
+    px(ctx, ...TILES.TEA_CROP, 0, y, '#3f6212', 32, 2, { h: 0.2 });
+    px(ctx, ...TILES.TEA_CROP, 6, y - 2, '#fde047', 3, 2, { h: 0.95 });
+  }
+
+  drawTileBase(...TILES.SPACE_DOME, '#e2e8f0', 0.28, 0.65, 0.7);
+  px(ctx, ...TILES.SPACE_DOME, 4, 4, '#0f172a', 24, 6, { h: 0.35, r: 0.1 });
+  px(ctx, ...TILES.SPACE_DOME, 10, 16, '#38bdf8', 12, 10, { h: 0.45, r: 0.15 });
+  px(eCtx, ...TILES.SPACE_DOME, 10, 16, '#0ea5e9', 12, 10);
+
+  drawTileBase(...TILES.HEARTH_FIRE, '#334155', 0.85, 0.1, 0.6);
+  px(ctx, ...TILES.HEARTH_FIRE, 6, 8, '#0f172a', 20, 22, { h: 0.2 });
+  px(ctx, ...TILES.HEARTH_FIRE, 10, 14, '#f97316', 12, 14, { h: 0.4 });
+  px(ctx, ...TILES.HEARTH_FIRE, 13, 18, '#facc15', 6, 10, { h: 0.45 });
+  px(eCtx, ...TILES.HEARTH_FIRE, 10, 14, '#ea580c', 12, 14);
+  px(eCtx, ...TILES.HEARTH_FIRE, 13, 18, '#fde047', 6, 10);
 
   // Generate Tangent-Space Normal Canvas & Roughness/Metalness Canvas
   const normalCanvas = buildNormalCanvasFromHeight(heightBuf, size, 3.2);

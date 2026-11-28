@@ -327,12 +327,14 @@ function animate() {
     }
   }
 
-  // Chimney pixel smoke puffs when roof is visible or subtle outdoor ambiance
+  // Chimney pixel smoke puffs (1st-person roof chimney) & warm hearth embers (Lounge)
   smokeTimer += dt;
   if (smokeTimer > 0.55) {
     smokeTimer = 0;
     if (store.getState().environment.cameraMode === 'firstPerson') {
       particlePool.emitSmoke(-8.5, 8.2, -7.0);
+    } else {
+      particlePool.emitSmoke(-2.3, 1.45, 0.7);
     }
   }
 
@@ -354,9 +356,9 @@ function animate() {
     store.setWorldState({ nearbyTriggerId: nextNearbyId });
   }
 
-  // Dynamic Cutaway, City Traffic, Follow Shadow, Lighting & Pooled Particles
+  // Dynamic Cutaway, House Animations, City Traffic, Follow Shadow, Lighting & Pooled Particles
   houseBuilder.updateCutaway(store.getState().environment.cameraMode, cameraRig.getYaw());
-  houseBuilder.updateAnimations(elapsed);
+  houseBuilder.updateAnimations(elapsed, avatarBuilder.root.position, dt);
   cityBuilder.update(dt, elapsed);
   lightingSystem.setShadowCenter(physState.x, physState.z);
   lightingSystem.update(dt);

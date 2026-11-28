@@ -1,4 +1,4 @@
-const GITHUB_CACHE_PREFIX = 'mohilc_gh_cache_v2_';
+const GITHUB_CACHE_PREFIX = 'mohilc_gh_cache_v3_';
 const CACHE_TTL_MS = 15 * 60 * 1000;
 
 /**
@@ -12,7 +12,7 @@ export const MOHILC_FALLBACK_SNAPSHOT = {
     avatar_url: 'https://avatars.githubusercontent.com/u/176016365?v=4',
     html_url: 'https://github.com/Mohilc',
     bio: 'CSE-AI Undergraduate · AI/ML, Computer Vision, Full-Stack Web & UAV Robotics',
-    public_repos: 48,
+    public_repos: 49,
     followers: 12,
     following: 15,
     location: 'India',
@@ -22,6 +22,18 @@ CSE-AI Undergraduate | AI/ML | Computer Vision | Full-Stack Development | UAV & 
 
 Turning ideas into working projects — from AI-powered computer vision systems to web applications, drones, and embedded hardware (ESP32, ESP32-CAM, Raspberry Pi).`,
   repos: [
+    {
+      name: 'Portfolio_mohilc',
+      full_name: 'Mohilc/Portfolio_mohilc',
+      description: 'Interactive 3D Pixel-Art Open-World Portfolio built with Three.js and live GitHub sync.',
+      language: 'JavaScript',
+      stargazers_count: 1,
+      forks_count: 0,
+      homepage: 'https://mohilc.github.io/Portfolio_mohilc/',
+      html_url: 'https://github.com/Mohilc/Portfolio_mohilc',
+      pushed_at: '2026-11-27T16:36:55Z',
+      topics: ['threejs', 'portfolio', 'webgl'],
+    },
     {
       name: 'meiyonpersonalai',
       full_name: 'Mohilc/meiyonpersonalai',
@@ -57,6 +69,66 @@ Turning ideas into working projects — from AI-powered computer vision systems 
       html_url: 'https://github.com/Mohilc/AgriVision-AI-Crop-Damage-Intelligence-Farmer-Assistant',
       pushed_at: '2026-09-29T04:13:47Z',
       topics: ['ai', 'computer-vision', 'agriculture'],
+    },
+    {
+      name: 'VisionSafeAIRoadAssistant',
+      full_name: 'Mohilc/VisionSafeAIRoadAssistant',
+      description: 'VisionSafeAIRoadAssistant — AI road safety and driver hazard detection assistant.',
+      language: 'TypeScript',
+      stargazers_count: 1,
+      forks_count: 0,
+      homepage: '',
+      html_url: 'https://github.com/Mohilc/VisionSafeAIRoadAssistant',
+      pushed_at: '2025-12-21T15:28:23Z',
+      topics: ['vision', 'road-safety', 'ai'],
+    },
+    {
+      name: 'VisionAidAISafetygent',
+      full_name: 'Mohilc/VisionAidAISafetygent',
+      description: 'VisionAidAISafetygent — intelligent visual safety agent.',
+      language: 'TypeScript',
+      stargazers_count: 1,
+      forks_count: 0,
+      homepage: '',
+      html_url: 'https://github.com/Mohilc/VisionAidAISafetygent',
+      pushed_at: '2025-12-21T14:45:01Z',
+      topics: ['vision', 'safety', 'agent'],
+    },
+    {
+      name: 'resucerovermain',
+      full_name: 'Mohilc/resucerovermain',
+      description: 'Embedded robotics & rescue rover control stack with sensors and telemetry.',
+      language: 'JavaScript',
+      stargazers_count: 1,
+      forks_count: 0,
+      homepage: '',
+      html_url: 'https://github.com/Mohilc/resucerovermain',
+      pushed_at: '2026-09-15T15:46:11Z',
+      topics: ['robotics', 'esp32', 'uav'],
+    },
+    {
+      name: 'looptroopnasa2025',
+      full_name: 'Mohilc/looptroopnasa2025',
+      description: 'NASA Space Apps 2025 interactive Earth & space exploration web application.',
+      language: 'TypeScript',
+      stargazers_count: 1,
+      forks_count: 0,
+      homepage: 'https://nasa2025-virid.vercel.app',
+      html_url: 'https://github.com/Mohilc/looptroopnasa2025',
+      pushed_at: '2025-10-13T12:26:27Z',
+      topics: ['nasa', 'hackathon', 'space'],
+    },
+    {
+      name: 'nasa-project',
+      full_name: 'Mohilc/nasa-project',
+      description: 'Space visualization and astronomy showcase.',
+      language: 'CSS',
+      stargazers_count: 0,
+      forks_count: 0,
+      homepage: '',
+      html_url: 'https://github.com/Mohilc/nasa-project',
+      pushed_at: '2024-09-19T17:31:27Z',
+      topics: ['nasa', 'space'],
     },
     {
       name: 'agenticemail',
@@ -107,30 +179,6 @@ Turning ideas into working projects — from AI-powered computer vision systems 
       topics: ['hackathon', 'ai'],
     },
     {
-      name: 'resucerovermain',
-      full_name: 'Mohilc/resucerovermain',
-      description: 'Embedded robotics & rescue rover control stack with sensors and telemetry.',
-      language: 'JavaScript',
-      stargazers_count: 1,
-      forks_count: 0,
-      homepage: '',
-      html_url: 'https://github.com/Mohilc/resucerovermain',
-      pushed_at: '2026-09-15T15:46:15Z',
-      topics: ['robotics', 'esp32', 'uav'],
-    },
-    {
-      name: 'looptroopnasa2025',
-      full_name: 'Mohilc/looptroopnasa2025',
-      description: 'NASA Space Apps 2025 interactive Earth & space exploration web application.',
-      language: 'TypeScript',
-      stargazers_count: 1,
-      forks_count: 0,
-      homepage: 'https://nasa2025-virid.vercel.app',
-      html_url: 'https://github.com/Mohilc/looptroopnasa2025',
-      pushed_at: '2025-10-13T12:26:27Z',
-      topics: ['nasa', 'hackathon', 'typescript'],
-    },
-    {
       name: 'house-price-flask-magic',
       full_name: 'Mohilc/house-price-flask-magic',
       description: 'Real-estate valuation ML model wrapped in a sleek TypeScript & Flask interface.',
@@ -140,7 +188,19 @@ Turning ideas into working projects — from AI-powered computer vision systems 
       homepage: 'https://house-price-flask-magic.vercel.app',
       html_url: 'https://github.com/Mohilc/house-price-flask-magic',
       pushed_at: '2025-06-12T14:43:58Z',
-      topics: ['ml', 'flask', 'web'],
+      topics: ['ml', 'flask', 'real-estate'],
+    },
+    {
+      name: 'munnar',
+      full_name: 'Mohilc/munnar',
+      description: 'Munnar Hill Station tourism & attractions interactive web guide.',
+      language: 'HTML',
+      stargazers_count: 0,
+      forks_count: 0,
+      homepage: 'https://munnar.vercel.app',
+      html_url: 'https://github.com/Mohilc/munnar',
+      pushed_at: '2025-01-29T12:00:12Z',
+      topics: ['tourism', 'munnar', 'web'],
     },
     {
       name: 'earth-bloom-web',
@@ -152,7 +212,67 @@ Turning ideas into working projects — from AI-powered computer vision systems 
       homepage: 'https://earth-bloom-web.vercel.app',
       html_url: 'https://github.com/Mohilc/earth-bloom-web',
       pushed_at: '2025-04-13T06:11:19Z',
-      topics: ['web', 'typescript'],
+      topics: ['web', 'eco', 'typescript'],
+    },
+    {
+      name: 'Hoshiko',
+      full_name: 'Mohilc/Hoshiko',
+      description: 'Hoshiko creative web experience & themed showcase.',
+      language: 'CSS',
+      stargazers_count: 0,
+      forks_count: 0,
+      homepage: 'https://hoshiko-phi.vercel.app',
+      html_url: 'https://github.com/Mohilc/Hoshiko',
+      pushed_at: '2024-10-06T12:47:44Z',
+      topics: ['design', 'web'],
+    },
+    {
+      name: 'Team_Protein',
+      full_name: 'Mohilc/Team_Protein',
+      description: 'EmojiStories — playful interactive storytelling web experiment.',
+      language: 'HTML',
+      stargazers_count: 0,
+      forks_count: 0,
+      homepage: 'https://emojistories.vercel.app',
+      html_url: 'https://github.com/Mohilc/Team_Protein',
+      pushed_at: '2024-11-03T02:10:35Z',
+      topics: ['stories', 'web'],
+    },
+    {
+      name: 'uselesss7',
+      full_name: 'Mohilc/uselesss7',
+      description: 'Useless Project 3.0 creative hackathon build.',
+      language: 'JavaScript',
+      stargazers_count: 0,
+      forks_count: 0,
+      homepage: 'https://uslessproject3-0.vercel.app',
+      html_url: 'https://github.com/Mohilc/uselesss7',
+      pushed_at: '2026-09-11T22:31:58Z',
+      topics: ['useless-project', 'hackathon'],
+    },
+    {
+      name: 'UselessProjectmbccet',
+      full_name: 'Mohilc/UselessProjectmbccet',
+      description: 'TinkerHub MBCCET Useless Project quirky build.',
+      language: 'TypeScript',
+      stargazers_count: 0,
+      forks_count: 0,
+      homepage: 'https://useless-projectmbccet.vercel.app',
+      html_url: 'https://github.com/Mohilc/UselessProjectmbccet',
+      pushed_at: '2025-07-25T14:56:15Z',
+      topics: ['tinkerhub', 'useless-project'],
+    },
+    {
+      name: 'mohil-c-mbc-pookalam-24',
+      full_name: 'Mohilc/mohil-c-mbc-pookalam-24',
+      description: 'Digital Onam Pookalam floral geometric art code project.',
+      language: 'HTML',
+      stargazers_count: 0,
+      forks_count: 0,
+      homepage: '',
+      html_url: 'https://github.com/Mohilc/mohil-c-mbc-pookalam-24',
+      pushed_at: '2024-09-20T07:17:34Z',
+      topics: ['art', 'pookalam'],
     },
     {
       name: 'code-hut-py',
@@ -166,12 +286,36 @@ Turning ideas into working projects — from AI-powered computer vision systems 
       pushed_at: '2026-09-25T05:40:31Z',
       topics: ['python'],
     },
+    {
+      name: 'chatbotgemini',
+      full_name: 'Mohilc/chatbotgemini',
+      description: 'Gemini-powered conversational AI chatbot in Python.',
+      language: 'Python',
+      stargazers_count: 0,
+      forks_count: 0,
+      homepage: '',
+      html_url: 'https://github.com/Mohilc/chatbotgemini',
+      pushed_at: '2025-07-24T13:44:51Z',
+      topics: ['gemini', 'ai', 'chatbot'],
+    },
+    {
+      name: 'food-order',
+      full_name: 'Mohilc/food-order',
+      description: 'Restaurant & food ordering interface.',
+      language: 'HTML',
+      stargazers_count: 0,
+      forks_count: 0,
+      homepage: '',
+      html_url: 'https://github.com/Mohilc/food-order',
+      pushed_at: '2024-09-16T15:26:36Z',
+      topics: ['food', 'web'],
+    },
   ],
   events: [
+    { type: 'PushEvent', repo: { name: 'Mohilc/Portfolio_mohilc' }, created_at: '2026-11-27T16:36:55Z' },
     { type: 'PushEvent', repo: { name: 'Mohilc/meiyonpersonalai' }, created_at: '2026-11-27T15:44:35Z' },
     { type: 'PushEvent', repo: { name: 'Mohilc/elrics-task' }, created_at: '2026-11-10T09:47:34Z' },
     { type: 'PushEvent', repo: { name: 'Mohilc/-HackSphere3.0hackathon' }, created_at: '2026-10-27T17:48:15Z' },
-    { type: 'PushEvent', repo: { name: 'Mohilc/fossmbccet_bot' }, created_at: '2026-10-11T12:12:22Z' },
   ],
 };
 
@@ -207,21 +351,37 @@ export function categorizeRepos(repos) {
   const aiHardware = [];
   const webMedia = [];
   const hackathons = [];
+  const agriEco = [];
+  const spaceVision = [];
+  const cafeFood = [];
+  const funUseless = [];
 
   for (const repo of repos) {
     const haystack = `${repo.name} ${repo.description || ''} ${(repo.topics || []).join(' ')}`.toLowerCase();
     if (
       repo.language === 'Python' ||
       repo.language === 'Jupyter Notebook' ||
-      /ai|ml|vision|yolo|drone|uav|rover|crack|agri|bot|deep|esp32/.test(haystack)
+      /ai|ml|vision|yolo|drone|uav|rover|crack|agri|bot|deep|esp32|gemini/.test(haystack)
     ) {
       aiHardware.push(repo);
     }
     if (repo.homepage || /web|html|css|typescript|javascript|react|flask|vercel/.test(haystack)) {
       webMedia.push(repo);
     }
-    if (/hack|nasa|foss|trophy|contest|bot/.test(haystack)) {
+    if (/hack|nasa|foss|trophy|contest|bot|tinkerhub|useless/.test(haystack)) {
       hackathons.push(repo);
+    }
+    if (/agri|crop|earth|bloom|munnar|pookalam/.test(haystack)) {
+      agriEco.push(repo);
+    }
+    if (/nasa|space|vision|crack|road|safety/.test(haystack)) {
+      spaceVision.push(repo);
+    }
+    if (/food|hoshiko|protein|emoji|price|house/.test(haystack)) {
+      cafeFood.push(repo);
+    }
+    if (/useless|hack|tinker|elric|pookalam/.test(haystack)) {
+      funUseless.push(repo);
     }
   }
 
@@ -230,6 +390,10 @@ export function categorizeRepos(repos) {
     aiHardware: aiHardware.length ? aiHardware : repos.slice(0, 6),
     webMedia: webMedia.length ? webMedia : repos.filter((r) => r.homepage).concat(repos).slice(0, 6),
     hackathons: hackathons.length ? hackathons : repos.slice(0, 4),
+    agriEco: agriEco.length ? agriEco : repos.slice(0, 5),
+    spaceVision: spaceVision.length ? spaceVision : repos.slice(0, 5),
+    cafeFood: cafeFood.length ? cafeFood : repos.slice(0, 5),
+    funUseless: funUseless.length ? funUseless : repos.slice(0, 5),
   };
 }
 
@@ -337,7 +501,6 @@ export async function loadGithubPortfolio(username = 'Mohilc', featuredRepo = nu
 
     return { ...payload, source: 'live' };
   } catch (error) {
-    // Try stale cache first before static snapshot
     if (storage) {
       try {
         const stale = JSON.parse(storage.getItem(cacheKey) || 'null');

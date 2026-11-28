@@ -29,6 +29,18 @@ export class HouseBuilder {
 
     // Dynamic elements updated by animation or GitHub data
     this.droneRotorGroup = null;
+    this.dronePropellers = [];
+    this.frontDoorLeft = null;
+    this.frontDoorRight = null;
+    this.fanHead = null;
+    this.fanBlades = null;
+    this.clockPendulum = null;
+    this.hearthFlames = [];
+    this.hearthLight = null;
+    this.serverLeds = [];
+    this.koiFish = [];
+    this.swayCanopies = [];
+
     this.dynamicBookGroup = new THREE.Group();
     this.dynamicBookGroup.name = 'DynamicGitHubBooks';
     this.root.add(this.dynamicBookGroup);
@@ -46,6 +58,7 @@ export class HouseBuilder {
     this.buildRoofTrim();
     this.buildFurniture();
     this.buildGardenProps();
+    this.buildHouseAnimations();
   }
 
   makeAtlasBox(w, h, d, faceTiles, x, y, z, parent = this.root, castShadow = true) {
@@ -191,7 +204,8 @@ export class HouseBuilder {
     this.makeAtlasBox(1.4, 0.08, 0.12, TILES.METAL_DARK, 0, 0.04, 0, this.droneRotorGroup);
     this.makeAtlasBox(0.12, 0.08, 1.4, TILES.METAL_DARK, 0, 0.04, 0, this.droneRotorGroup);
     for (const [rx, rz] of [[-0.65, 0], [0.65, 0], [0, -0.65], [0, 0.65]]) {
-      this.makeAtlasBox(0.36, 0.04, 0.36, TILES.LANTERN_GLOW, rx, 0.12, rz, this.droneRotorGroup);
+      const prop = this.makeAtlasBox(0.42, 0.04, 0.14, TILES.LANTERN_GLOW, rx, 0.12, rz, this.droneRotorGroup);
+      this.dronePropellers.push(prop);
     }
 
     // === 3. LIVING LOUNGE (SW) ===
@@ -249,13 +263,20 @@ export class HouseBuilder {
     ];
     for (const [tx, tz] of treePositions) {
       this.makeAtlasBox(0.9, 2.2, 0.9, TILES.TRUNK_BARK, tx, 1.1, tz);
-      this.makeAtlasBox(2.9, 2.0, 2.9, TILES.LEAF_OAK, tx, 3.0, tz);
-      this.makeAtlasBox(2.0, 1.3, 2.0, TILES.LEAF_OAK, tx, 4.4, tz);
+      const canopy = new THREE.Group();
+      canopy.position.set(tx, 2.2, tz);
+      this.root.add(canopy);
+      this.makeAtlasBox(2.9, 2.0, 2.9, TILES.LEAF_OAK, 0, 0.8, 0, canopy);
+      this.makeAtlasBox(2.0, 1.3, 2.0, TILES.LEAF_OAK, 0, 2.2, 0, canopy);
+      this.swayCanopies.push({ group: canopy, phase: tx * 0.5 + tz * 0.3 });
     }
 
     // Reflective Pixel Koi Pond on West Patio Lawn
     this.makeAtlasBox(4.0, 0.25, 2.8, TILES.STONE_PATH, -10.5, 0.08, 12.6, this.root, false);
     this.pondWaterMesh = this.makeAtlasBox(3.4, 0.28, 2.2, TILES.WATER_POND, -10.5, 0.09, 12.6, this.root, false);
+
+    // Traditional Onam Pookalam Mosaic on Front Porch (mohil-c-mbc-pookalam-24)
+    this.makeAtlasBox(2.4, 0.06, 2.4, TILES.POOKALAM_TILE, 0, 0.08, 12.2, this.root, false);
 
     // Potted Pixel Plants inside Living Lounge & Study
     const plantSpots = [
@@ -265,7 +286,8 @@ export class HouseBuilder {
     ];
     for (const [px, pz] of plantSpots) {
       this.makeAtlasBox(0.6, 0.55, 0.6, TILES.WALL_BRICK, px, 0.35, pz);
-      this.makeAtlasBox(0.85, 0.75, 0.85, TILES.LEAF_OAK, px, 0.95, pz);
+      const leaves = this.makeAtlasBox(0.85, 0.75, 0.85, TILES.LEAF_OAK, px, 0.95, pz);
+      this.swayCanopies.push({ group: leaves, phase: px + pz });
     }
 
     // Dynamic Physics Props (linked to PhysicsSystem)
@@ -275,6 +297,88 @@ export class HouseBuilder {
       'lab-rover-cube': this.makeAtlasBox(0.7, 0.7, 0.7, TILES.DRONE_BODY, 7.5, 0.45, -2.4),
       'park-soccer-ball': this.makeAtlasBox(0.72, 0.72, 0.72, TILES.SOCCER_BALL, -34.0, 0.42, 4.0),
     };
+  }
+
+  buildHouseAnimations() {
+    // 1. Auto-Swinging Double Front Doors on hinges at Z = 10
+    this.frontDoorLeft = new THREE.Group();
+    this.frontDoorLeft.position.set(-1.82, 0, 10.0);
+    this.makeAtlasBox(1.8, 2.7, 0.22, TILES.DOOR_WOOD, 0.9, 1.35, 0, this.frontDoorLeft);
+    this.root.add(this.frontDoorLeft);
+
+    this.frontDoorRight = new THREE.Group();
+    this.frontDoorRight.position.set(1.82, 0, 10.0);
+    this.makeAtlasBox(1.8, 2.7, 0.22, TILES.DOOR_WOOD, -0.9, 1.35, 0, this.frontDoorRight);
+    this.root.add(this.frontDoorRight);
+
+    // 2. Living Lounge Hearth / Fireplace under portrait at (-2.3, 0.55)
+    this.makeAtlasBox(1.7, 1.25, 0.7, TILES.SUNDIAL_STONE, -2.3, 0.65, 0.55);
+    this.makeAtlasBox(1.9, 0.16, 0.82, TILES.WOOD_WALNUT, -2.3, 1.32, 0.55);
+    const flameColors = [0xf97316, 0xfacc15, 0xef4444];
+    for (let i = 0; i < 3; i += 1) {
+      const f = new THREE.Mesh(
+        new THREE.BoxGeometry(0.24, 0.42, 0.24),
+        new THREE.MeshBasicMaterial({ color: flameColors[i] })
+      );
+      f.position.set(-2.55 + i * 0.25, 0.45, 0.85);
+      f.userData.phase = i * 2.1;
+      this.root.add(f);
+      this.hearthFlames.push(f);
+    }
+    this.hearthLight = new THREE.PointLight(0xff7b29, 1.4, 7.5, 1.8);
+    this.hearthLight.position.set(-2.3, 0.9, 1.2);
+    this.root.add(this.hearthLight);
+
+    // 3. Oscillating Pixel Standing Fan in Lounge (-4.2, 2.0)
+    this.makeAtlasBox(0.55, 0.12, 0.55, TILES.METAL_DARK, -4.2, 0.16, 2.0);
+    this.makeAtlasBox(0.14, 1.25, 0.14, TILES.METAL_ACCENT, -4.2, 0.8, 2.0);
+    this.fanHead = new THREE.Group();
+    this.fanHead.position.set(-4.2, 1.5, 2.0);
+    this.root.add(this.fanHead);
+    this.makeAtlasBox(0.32, 0.32, 0.32, TILES.METAL_DARK, 0, 0, 0, this.fanHead);
+    this.fanBlades = new THREE.Group();
+    this.fanBlades.position.set(0, 0, 0.22);
+    this.makeAtlasBox(0.75, 0.12, 0.05, TILES.LANTERN_GLOW, 0, 0, 0, this.fanBlades);
+    this.makeAtlasBox(0.12, 0.75, 0.05, TILES.LANTERN_GLOW, 0, 0, 0, this.fanBlades);
+    this.fanHead.add(this.fanBlades);
+
+    // 4. Grandfather / Wall Pendulum Clock on Center Divider (-0.32, -1.4 facing Study)
+    this.makeAtlasBox(0.22, 1.9, 0.72, TILES.WOOD_WALNUT, -0.32, 1.4, -1.4);
+    this.makeAtlasBox(0.26, 0.5, 0.5, TILES.SUNDIAL_STONE, -0.34, 2.05, -1.4);
+    this.clockPendulum = new THREE.Group();
+    this.clockPendulum.position.set(-0.46, 1.65, -1.4);
+    const rod = new THREE.Mesh(
+      new THREE.BoxGeometry(0.05, 0.65, 0.05),
+      new THREE.MeshBasicMaterial({ color: 0xfacc15 })
+    );
+    rod.position.y = -0.35;
+    this.clockPendulum.add(rod);
+    this.root.add(this.clockPendulum);
+
+    // 5. Blinking Lab Server Rack LEDs
+    const ledColors = [0x22c55e, 0x38bdf8, 0xf43f5e, 0xfacc15];
+    for (let i = 0; i < 4; i += 1) {
+      const led = new THREE.Mesh(
+        new THREE.BoxGeometry(0.08, 0.14, 0.14),
+        new THREE.MeshBasicMaterial({ color: ledColors[i] })
+      );
+      led.position.set(10.22, 0.8 + i * 0.48, -4.3 - (i % 2) * 0.8);
+      led.userData.phase = i * 1.4;
+      this.root.add(led);
+      this.serverLeds.push(led);
+    }
+
+    // 6. Swimming Pixel Koi Fish in Backyard/Patio Pond (-10.5, 0.24, 12.6)
+    const koiColors = [0xf97316, 0xf8fafc];
+    for (let i = 0; i < 2; i += 1) {
+      const fish = new THREE.Mesh(
+        new THREE.BoxGeometry(0.32, 0.12, 0.16),
+        new THREE.MeshBasicMaterial({ color: koiColors[i] })
+      );
+      fish.userData.phase = i * Math.PI;
+      this.root.add(fish);
+      this.koiFish.push(fish);
+    }
   }
 
   /**
@@ -323,13 +427,69 @@ export class HouseBuilder {
     for (const m of this.southAttachments || []) m.visible = !cutSouth;
   }
 
-  updateAnimations(elapsed) {
+  updateAnimations(elapsed, avatarPos = null, dt = 0.016) {
     if (this.droneRotorGroup) {
       this.droneRotorGroup.position.y = 1.48 + Math.sin(elapsed * 3.2) * 0.14;
-      this.droneRotorGroup.rotation.y = elapsed * 0.8;
+      this.droneRotorGroup.rotation.y = elapsed * 0.7;
+      for (const prop of this.dronePropellers) {
+        prop.rotation.y += dt * 22;
+      }
     }
+
     if (this.pondWaterMesh) {
       this.pondWaterMesh.position.y = 0.09 + Math.sin(elapsed * 2.1) * 0.015;
+    }
+
+    // Proximity-activated swinging front doors
+    if (this.frontDoorLeft && this.frontDoorRight) {
+      const distToDoor = avatarPos
+        ? Math.hypot(avatarPos.x - 0, avatarPos.z - 10.0)
+        : 99;
+      const openAngle = distToDoor < 4.2 ? 1.35 : 0;
+      const lerp = Math.min(1, dt * 7);
+      this.frontDoorLeft.rotation.y += (openAngle - this.frontDoorLeft.rotation.y) * lerp;
+      this.frontDoorRight.rotation.y += (-openAngle - this.frontDoorRight.rotation.y) * lerp;
+    }
+
+    // Lounge oscillating fan
+    if (this.fanHead && this.fanBlades) {
+      this.fanHead.rotation.y = -Math.PI * 0.35 + Math.sin(elapsed * 1.1) * 0.55;
+      this.fanBlades.rotation.z = elapsed * 14;
+    }
+
+    // Clock pendulum swing
+    if (this.clockPendulum) {
+      this.clockPendulum.rotation.x = Math.sin(elapsed * 3.14) * 0.28;
+    }
+
+    // Hearth flickering flames + warm light
+    for (const f of this.hearthFlames) {
+      const pulse = 0.75 + Math.sin(elapsed * 12 + f.userData.phase) * 0.35;
+      f.scale.y = Math.max(0.45, pulse);
+    }
+    if (this.hearthLight) {
+      this.hearthLight.intensity = 1.1 + Math.sin(elapsed * 15) * 0.28;
+    }
+
+    // Lab server LED telemetry pulse
+    for (const led of this.serverLeds) {
+      led.visible = Math.sin(elapsed * 5 + led.userData.phase) > -0.2;
+    }
+
+    // Swimming Koi fish figure-8 in pond (-10.5, 12.6)
+    for (const fish of this.koiFish) {
+      const t = elapsed * 1.15 + fish.userData.phase;
+      const fx = -10.5 + Math.cos(t) * 1.05;
+      const fz = 12.6 + Math.sin(t * 2) * 0.48;
+      const dx = -Math.sin(t) * 1.05;
+      const dz = Math.cos(t * 2) * 0.96;
+      fish.position.set(fx, 0.25, fz);
+      fish.rotation.y = Math.atan2(dx, dz) + Math.PI / 2;
+    }
+
+    // Gentle tree & potted plant breeze sway
+    for (const item of this.swayCanopies) {
+      item.group.rotation.z = Math.sin(elapsed * 1.6 + item.phase) * 0.035;
     }
   }
 }
