@@ -40,6 +40,8 @@ export class HouseBuilder {
     this.serverLeds = [];
     this.koiFish = [];
     this.swayCanopies = [];
+    this.robotArmBase = null;
+    this.robotArmUpper = null;
 
     this.dynamicBookGroup = new THREE.Group();
     this.dynamicBookGroup.name = 'DynamicGitHubBooks';
@@ -177,9 +179,14 @@ export class HouseBuilder {
 
     // Coding Workstation Desk at (-9.9, -4.5)
     this.makeAtlasBox(1.6, 0.9, 3.3, TILES.WOOD_OAK, -9.9, 0.45, -4.5);
-    // Dual Pixel Monitors
+    // Dual Pixel Monitors, Keyboard, Mouse & Desk Lamp
     this.makeAtlasBox(0.2, 0.85, 1.2, [TILES.MONITOR_CODE, TILES.METAL_DARK, TILES.METAL_DARK, TILES.METAL_DARK, TILES.METAL_DARK, TILES.METAL_DARK], -10.2, 1.45, -3.7);
     this.makeAtlasBox(0.2, 0.85, 1.2, [TILES.MONITOR_CODE, TILES.METAL_DARK, TILES.METAL_DARK, TILES.METAL_DARK, TILES.METAL_DARK, TILES.METAL_DARK], -10.2, 1.45, -5.3);
+    this.makeAtlasBox(0.32, 0.06, 0.95, TILES.METAL_DARK, -9.55, 0.93, -4.5);
+    this.makeAtlasBox(0.16, 0.55, 0.16, TILES.METAL_ACCENT, -10.3, 1.18, -5.85);
+    this.makeAtlasBox(0.35, 0.25, 0.35, TILES.LANTERN_GLOW, -10.2, 1.5, -5.85);
+    // Study Whiteboard on NW wall
+    this.makeAtlasBox(2.2, 1.4, 0.12, TILES.SUNDIAL_STONE, -9.8, 2.55, -9.62);
     // Desk chair
     this.makeAtlasBox(0.8, 0.6, 0.8, TILES.SOFA_FABRIC, -8.6, 0.35, -4.5);
 
@@ -187,10 +194,21 @@ export class HouseBuilder {
     // Drone & CV Workbench at (6.0, -8.9)
     this.makeAtlasBox(4.1, 1.0, 1.2, TILES.METAL_DARK, 6.0, 0.5, -8.9);
     this.makeAtlasBox(4.2, 0.14, 1.3, TILES.METAL_ACCENT, 6.0, 1.05, -8.9);
-    // Lab monitor on bench
+    // Lab monitor on bench (YOLOv8 CV display)
     this.makeAtlasBox(1.2, 0.85, 0.18, [TILES.METAL_DARK, TILES.METAL_DARK, TILES.METAL_DARK, TILES.METAL_DARK, TILES.MONITOR_CODE, TILES.METAL_DARK], 5.1, 1.55, -9.1);
     // Rover chassis on bench
-    this.makeAtlasBox(1.1, 0.35, 0.8, TILES.DRONE_BODY, 7.0, 1.32, -8.8);
+    this.makeAtlasBox(1.1, 0.35, 0.8, TILES.DRONE_BODY, 6.6, 1.32, -8.8);
+    // Articulating Robotic Arm on Workbench
+    this.robotArmBase = new THREE.Group();
+    this.robotArmBase.position.set(7.65, 1.12, -8.85);
+    this.makeAtlasBox(0.36, 0.18, 0.36, TILES.METAL_DARK, 0, 0.09, 0, this.robotArmBase);
+    this.makeAtlasBox(0.16, 0.65, 0.16, TILES.DRONE_BODY, 0, 0.45, 0, this.robotArmBase);
+    this.robotArmUpper = new THREE.Group();
+    this.robotArmUpper.position.set(0, 0.72, 0);
+    this.makeAtlasBox(0.14, 0.14, 0.65, TILES.METAL_ACCENT, 0, 0, 0.28, this.robotArmUpper);
+    this.makeAtlasBox(0.24, 0.14, 0.16, TILES.LANTERN_GLOW, 0, -0.04, 0.62, this.robotArmUpper);
+    this.robotArmBase.add(this.robotArmUpper);
+    this.root.add(this.robotArmBase);
 
     // AI Server Rack at (10.8, -4.8)
     this.makeAtlasBox(1.1, 2.8, 2.4, [TILES.METAL_DARK, TILES.SERVER_RACK, TILES.METAL_DARK, TILES.METAL_DARK, TILES.SERVER_RACK, TILES.METAL_DARK], 10.8, 1.4, -4.8);
@@ -217,8 +235,11 @@ export class HouseBuilder {
     this.makeAtlasBox(0.45, 0.45, 0.55, TILES.SOFA_PILLOW, -5.2, 0.75, 4.0);
     this.makeAtlasBox(0.45, 0.45, 0.55, TILES.SOFA_PILLOW, -5.2, 0.75, 6.0);
 
-    // Coffee Table at (-7.8, 5.0)
+    // Coffee Table at (-7.8, 5.0) with Pixel Laptop & Coffee Mug
     this.makeAtlasBox(1.05, 0.42, 2.0, TILES.WOOD_OAK, -7.8, 0.28, 5.0);
+    this.makeAtlasBox(0.45, 0.06, 0.58, TILES.METAL_DARK, -7.8, 0.52, 4.7);
+    this.makeAtlasBox(0.06, 0.38, 0.58, TILES.MONITOR_CODE, -8.0, 0.72, 4.7);
+    this.makeAtlasBox(0.18, 0.2, 0.18, TILES.SOFA_PILLOW, -7.75, 0.58, 5.45);
     // Warm Lamp next to Sofa
     this.makeAtlasBox(0.35, 1.6, 0.35, TILES.WOOD_WALNUT, -4.8, 0.8, 2.6);
     this.makeAtlasBox(0.7, 0.55, 0.7, TILES.LANTERN_GLOW, -4.8, 1.75, 2.6);
@@ -232,16 +253,32 @@ export class HouseBuilder {
     this.makeAtlasBox(1.2, 1.9, 0.48, TILES.MIRROR_GLASS, -3.2, 1.35, 9.05);
 
     // === 4. ARCADE & TROPHY DEN (SE) ===
-    // Retro Arcade Cabinet at (10.1, 4.6) facing West
+    // Dual Retro Arcade Cabinets at (10.1, 4.6) and (10.1, 6.7)
     this.makeAtlasBox(1.3, 1.4, 1.5, TILES.ARCADE_SIDE, 10.1, 0.7, 4.6);
     this.makeAtlasBox(1.0, 1.15, 1.4, [TILES.ARCADE_SIDE, TILES.ARCADE_SCREEN, TILES.ARCADE_SIDE, TILES.ARCADE_SIDE, TILES.ARCADE_SIDE, TILES.ARCADE_SIDE], 10.2, 1.85, 4.6);
     this.makeAtlasBox(1.3, 0.35, 1.5, TILES.ARCADE_SIDE, 10.1, 2.55, 4.6);
+
+    this.makeAtlasBox(1.3, 1.4, 1.4, TILES.ARCADE_SIDE, 10.1, 0.7, 6.6);
+    this.makeAtlasBox(1.0, 1.15, 1.3, [TILES.ARCADE_SIDE, TILES.ARCADE_SCREEN, TILES.ARCADE_SIDE, TILES.ARCADE_SIDE, TILES.ARCADE_SIDE, TILES.ARCADE_SIDE], 10.2, 1.85, 6.6);
+    this.makeAtlasBox(1.3, 0.35, 1.4, TILES.ARCADE_SIDE, 10.1, 2.55, 6.6);
+
+    // Arcade Synth Keyboard & Cozy Beanbag
+    this.makeAtlasBox(1.6, 0.16, 0.6, TILES.METAL_DARK, 2.4, 0.85, 8.9);
+    this.makeAtlasBox(0.16, 0.8, 0.45, TILES.METAL_ACCENT, 1.75, 0.42, 8.9);
+    this.makeAtlasBox(0.16, 0.8, 0.45, TILES.METAL_ACCENT, 3.05, 0.42, 8.9);
+    this.makeAtlasBox(1.3, 0.55, 1.3, TILES.SOFA_PILLOW, 3.3, 0.32, 4.8);
 
     // Hackathon Trophy Shelf at (6.0, 9.1)
     this.makeAtlasBox(3.4, 1.5, 0.8, TILES.WOOD_WALNUT, 6.0, 0.75, 9.1);
     this.makeAtlasBox(0.5, 0.65, 0.5, TILES.TROPHY_GOLD, 5.0, 1.85, 9.1, this.trophyGroup);
     this.makeAtlasBox(0.55, 0.85, 0.55, TILES.TROPHY_GOLD, 6.0, 1.95, 9.1, this.trophyGroup);
     this.makeAtlasBox(0.5, 0.65, 0.5, TILES.TROPHY_GOLD, 7.0, 1.85, 9.1, this.trophyGroup);
+
+    // Front Porch Flower Planter Boxes
+    this.makeAtlasBox(2.4, 0.48, 0.55, TILES.WALL_BRICK, -5.8, 0.25, 10.55);
+    this.makeAtlasBox(2.2, 0.38, 0.45, TILES.GRASS_FLOWER, -5.8, 0.62, 10.55);
+    this.makeAtlasBox(2.4, 0.48, 0.55, TILES.WALL_BRICK, 5.8, 0.25, 10.55);
+    this.makeAtlasBox(2.2, 0.38, 0.45, TILES.GRASS_FLOWER, 5.8, 0.62, 10.55);
   }
 
   buildGardenProps() {
@@ -408,7 +445,7 @@ export class HouseBuilder {
     const camOffsetZ = Math.cos(cameraYaw);
 
     const lowerWall = (meshes, shouldCut) => {
-      const targetScale = shouldCut ? 0.22 : 1.0;
+      const targetScale = shouldCut ? 0.14 : 1.0;
       for (const m of meshes) {
         m.scale.y += (targetScale - m.scale.y) * 0.22;
         m.position.y = (m.userData.fullHeight * m.scale.y) / 2;
@@ -490,6 +527,12 @@ export class HouseBuilder {
     // Gentle tree & potted plant breeze sway
     for (const item of this.swayCanopies) {
       item.group.rotation.z = Math.sin(elapsed * 1.6 + item.phase) * 0.035;
+    }
+
+    // Lab Articulating Robotic Arm
+    if (this.robotArmBase && this.robotArmUpper) {
+      this.robotArmBase.rotation.y = Math.sin(elapsed * 1.2) * 0.65;
+      this.robotArmUpper.rotation.x = -0.25 + Math.sin(elapsed * 2.4) * 0.35;
     }
   }
 }

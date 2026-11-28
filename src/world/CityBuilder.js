@@ -99,10 +99,16 @@ export class CityBuilder {
     this.pushBox(this.groundGeos, 3.6, 0.18, 8.0, TILES.STONE_PATH, -34, -0.02, 15.0);
     this.pushBox(this.shadowGeos, 3.0, 0.55, 0.8, TILES.WOOD_OAK, -34, 0.35, 14.5);
 
-    // AgriVision AI Crop Farm & Greenhouse (-34, -9.5)
+    // AgriVision AI Crop Farm & Greenhouse (-34, -9.5) + Tall Crop Stalks & Solar Sensor
     for (let row = 0; row < 3; row += 1) {
-      this.pushBox(this.shadowGeos, 12.0, 0.32, 1.3, TILES.TEA_CROP, -34, 0.16, -4.6 - row * 2.0);
+      const rz = -4.6 - row * 2.0;
+      this.pushBox(this.shadowGeos, 12.0, 0.32, 1.3, TILES.TEA_CROP, -34, 0.16, rz);
+      for (let cx = -39; cx <= -29; cx += 2.5) {
+        this.pushBox(this.shadowGeos, 0.4, 0.95, 0.4, TILES.LEAF_OAK, cx, 0.72, rz);
+      }
     }
+    this.pushBox(this.shadowGeos, 0.2, 2.2, 0.2, TILES.METAL_ACCENT, -27.5, 1.1, -6.5);
+    this.pushBox(this.shadowGeos, 0.85, 0.12, 0.65, TILES.BUILDING_GLASS, -27.5, 2.25, -6.5);
     this.pushBox(this.shadowGeos, 6.2, 3.0, 4.2, TILES.BUILDING_GLASS, -34, 1.5, -9.5);
     this.pushBox(this.shadowGeos, 6.8, 0.5, 4.8, TILES.WOOD_OAK, -34, 3.25, -9.5);
 
@@ -127,14 +133,27 @@ export class CityBuilder {
 
     for (const tx of [27.5, 34.5]) {
       this.pushBox(this.shadowGeos, 1.4, 0.8, 1.4, TILES.WOOD_OAK, tx, 0.45, 14.0);
+      this.pushBox(this.shadowGeos, 0.24, 0.26, 0.24, TILES.SOFA_PILLOW, tx - 0.25, 0.96, 14.0);
+      this.pushBox(this.shadowGeos, 0.32, 0.12, 0.32, TILES.WALL_CREAM, tx + 0.25, 0.9, 13.8);
       this.pushBox(this.shadowGeos, 2.2, 0.25, 2.2, TILES.AWNING_STRIPE, tx, 2.4, 14.0);
       this.pushBox(this.shadowGeos, 0.18, 2.0, 0.18, TILES.METAL_ACCENT, tx, 1.4, 14.0);
     }
+    // Hoshiko Outdoor Espresso Counter & Pastry Case
+    this.pushBox(this.shadowGeos, 3.2, 1.05, 0.9, TILES.WOOD_WALNUT, 31, 0.52, 11.1);
+    this.pushBox(this.shadowGeos, 0.9, 0.65, 0.65, TILES.METAL_ACCENT, 30.2, 1.35, 11.1);
 
-    // Rescue Rover Test Arena & Observation Tower (East Campus)
+    // Rescue Rover Test Arena & CrackWise Concrete Bridge Arch (East Campus)
     this.pushBox(this.groundGeos, 14.0, 0.2, 14.0, TILES.LAB_TILE, 52, 0.0, 8.5);
+    this.pushBox(this.shadowGeos, 0.9, 2.6, 1.0, TILES.SUNDIAL_STONE, 57.5, 1.3, 13.0);
+    this.pushBox(this.shadowGeos, 0.9, 2.6, 1.0, TILES.SUNDIAL_STONE, 57.5, 1.3, 16.2);
+    this.pushBox(this.shadowGeos, 1.0, 0.8, 4.4, TILES.SUNDIAL_STONE, 57.5, 2.9, 14.6);
     this.pushBox(this.shadowGeos, 6.2, 8.5, 6.2, TILES.BUILDING_CONCRETE, 53, 4.25, -2.0);
     this.pushBox(this.shadowGeos, 7.0, 1.8, 7.0, TILES.BUILDING_GLASS, 53, 9.4, -2.0);
+
+    // House-Price ML Mini 3D Model House on Front Lawn (next to sign at 6.4, 13.0)
+    this.pushBox(this.shadowGeos, 1.1, 0.7, 1.1, TILES.SUNDIAL_STONE, 6.4, 0.35, 12.8);
+    this.pushBox(this.shadowGeos, 0.95, 0.65, 0.85, TILES.WALL_CREAM, 6.4, 1.02, 12.8);
+    this.pushBox(this.shadowGeos, 1.15, 0.35, 1.05, TILES.ROOF_SHINGLE, 6.4, 1.5, 12.8);
   }
 
   buildDowntownCityAndNasaDome() {
@@ -148,11 +167,19 @@ export class CityBuilder {
     this.pushBox(this.shadowGeos, 3.2, 0.55, 0.8, TILES.WOOD_OAK, -7.5, 0.35, 40.0);
     this.pushBox(this.shadowGeos, 3.2, 0.55, 0.8, TILES.WOOD_OAK, 7.5, 0.35, 40.0);
 
-    // West Downtown: NASA Space Observatory Dome (-32, 45) + Studio Tower (-52, 44)
+    // West Downtown: NASA Space Observatory Dome (-32, 45) + Rocket Launchpad (-23.5, 44.5) + Studio Tower (-52, 44)
     this.pushBox(this.groundGeos, 28.0, 0.2, 26.0, TILES.SIDEWALK_CURB, -36, -0.01, 43.0);
     this.pushBox(this.shadowGeos, 12.0, 8.0, 12.0, TILES.SPACE_DOME, -32, 4.0, 45.0);
     this.pushBox(this.shadowGeos, 9.0, 3.0, 9.0, TILES.SPACE_DOME, -32, 9.5, 45.0);
     this.pushBox(this.shadowGeos, 5.5, 2.0, 5.5, TILES.BUILDING_GLASS, -32, 12.0, 45.0);
+    // NASA Pixel Rocket on Launchpad (looptroopnasa2025)
+    this.pushBox(this.shadowGeos, 3.8, 0.4, 3.8, TILES.METAL_DARK, -23.5, 0.2, 44.5);
+    this.pushBox(this.shadowGeos, 1.4, 5.2, 1.4, TILES.FENCE_WHITE, -23.5, 3.2, 44.5);
+    this.pushBox(this.shadowGeos, 0.9, 1.4, 0.9, TILES.ROOF_SHINGLE, -23.5, 6.4, 44.5);
+    this.pushBox(this.shadowGeos, 2.2, 1.0, 0.6, TILES.ROOF_SHINGLE, -23.5, 1.1, 44.5);
+    this.pushBox(this.shadowGeos, 0.6, 1.0, 2.2, TILES.ROOF_SHINGLE, -23.5, 1.1, 44.5);
+    this.pushBox(this.shadowGeos, 0.7, 0.6, 0.7, TILES.LANTERN_GLOW, -23.5, 0.55, 44.5);
+
     this.pushBox(this.shadowGeos, 11.0, 12.5, 11.0, TILES.BUILDING_CONCRETE, -52, 6.25, 44.0);
     this.pushBox(this.shadowGeos, 11.6, 0.8, 11.6, TILES.ROOF_SHINGLE, -52, 12.9, 44.0);
 

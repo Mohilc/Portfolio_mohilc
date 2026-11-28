@@ -17,9 +17,9 @@ export class OrthoCameraRig {
     this.domElement = domElement;
     this.aspect = aspect;
     this.mode = 'isometric'; // 'isometric' | 'firstPerson'
-    this.frustumHeight = 16;
+    this.frustumHeight = 14.5;
     this.orbitDistance = 28;
-    this.zoom = 1.05;
+    this.zoom = 1.15;
     this.target = new THREE.Vector3(0, 1.0, 14.5);
 
     const halfH = this.frustumHeight / 2;
@@ -97,8 +97,8 @@ export class OrthoCameraRig {
       // Looking downward from 18deg to 68deg below horizon
       this.controls.minPolarAngle = Math.PI / 2 + 0.28;
       this.controls.maxPolarAngle = Math.PI / 2 + 1.18;
-      this.frustumHeight = 16;
-      this.zoom = Math.max(0.65, Math.min(2.2, this.zoom));
+      this.frustumHeight = 14.5;
+      this.zoom = Math.max(0.65, Math.min(2.4, this.zoom));
       _euler.setFromQuaternion(this.camera.quaternion, 'YXZ');
       if (_euler.x > -0.28) {
         _euler.x = -0.58;

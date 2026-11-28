@@ -5,6 +5,7 @@ import {
   LANGUAGE_COLORS,
 } from '../services/githubService.js';
 import { soundService } from '../services/soundService.js';
+import { INTERACTIVE_TRIGGERS, ROOMS } from '../world/HouseData.js';
 import { mountContributionSnake } from './miniGames/ContributionSnake.js';
 import { mountDroneCrackScanner } from './miniGames/DroneCrackScanner.js';
 
@@ -35,13 +36,25 @@ function renderMarkdownLite(md) {
  * Bookshelf, Sofa, Retro TV, Drone Workbench, Arcade Cabinet, or Sundial.
  */
 export class InteractiveDrawer {
-  constructor({ drawerEl, roomTagEl, titleEl, bodyEl, closeBtn, store, onEmitBurst, avatarModal, githubModal }) {
+  constructor({
+    drawerEl,
+    roomTagEl,
+    titleEl,
+    bodyEl,
+    closeBtn,
+    store,
+    onEmitBurst,
+    onTeleportRoom,
+    avatarModal,
+    githubModal,
+  }) {
     this.drawerEl = drawerEl;
     this.roomTagEl = roomTagEl;
     this.titleEl = titleEl;
     this.bodyEl = bodyEl;
     this.store = store;
     this.onEmitBurst = onEmitBurst;
+    this.onTeleportRoom = onTeleportRoom;
     this.avatarModal = avatarModal;
     this.githubModal = githubModal;
 
@@ -153,6 +166,9 @@ export class InteractiveDrawer {
         break;
       case 'environment_panel':
         this.renderEnvironmentPanel(state.environment);
+        break;
+      case 'world_guide':
+        this.renderWorldGuide(gh);
         break;
       default:
         this.bodyEl.innerHTML = `<p>Interactive trigger: ${escapeHtml(this.activeTrigger.title)}</p>`;
@@ -651,6 +667,67 @@ export class InteractiveDrawer {
         soundService.playCollect();
         this.store.updateEnvironment({ cameraMode: btn.dataset.cam });
         this.renderEnvironmentPanel(this.store.getState().environment);
+      });
+    });
+  }
+
+  renderWorldGuide(gh) {
+    const p = gh.profile || {};
+    const customPhoto = this.store.getState().avatar?.customPhotoUrl;
+    const photoSrc = customPhoto || p.avatar_url || 'https://avatars.githubusercontent.com/u/176016365?v=4';
+    const featuredRooms = ROOMS.filter((r) => !['avenue', 'downtown-skyline'].includes(r.id));
+
+    this.bodyEl.innerHTML = `
+      <div class="bio-panel">
+        <div class="bio-header">
+          <img class="pixel-avatar-img" src="${escapeHtml(photoSrc)}" referrerpolicy="no-referrer" alt="${escapeHtml(p.login || gh.username)}" />
+          <div>
+            <h3>${escapeHtml(p.name || 'Mohil C')} — INTERACTIVE 3D PORTFOLIO</h3>
+            <p class="bio-handle">@${escapeHtml(p.login || gh.username)} · ${gh.repos.length} GitHub Repositories</p>
+            <p>${escapeHtml(p.bio || 'CSE-AI Undergraduate · AI/ML, Computer Vision, UAV Robotics & Full-Stack Web')}</p>
+            <div class="detail-actions" style="margin-top:6px">
+              <button class="pixel-btn accent small" id="guide-open-repos">BROWSE ALL ${gh.repos.length} REPOS</button>
+              <a class="pixel-btn small" href="${escapeHtml(p.html_url || `https://github.com/${gh.username}`)}" target="_blank" rel="noopener noreferrer">GITHUB PROFILE ↗</a>
+            </div>
+          </div>
+        </div>
+        <p class="hint-text">
+          Walk with <strong>WASD</strong>, jump with <strong>SPACE</strong>, click the viewport for <strong>Pointer Lock</strong>, or jump straight to any themed zone below:
+        </p>
+        <div class="chip-grid">
+          ${featuredRooms
+            .map((r) => {
+              const roomTriggers = INTERACTIVE_TRIGGERS.filter((t) => t.roomId === r.id);
+              return `
+                <div class="repo-card">
+                  <div class="repo-card-top">
+                    <strong>${escapeHtml(r.name)}</strong>
+                    <button class="pixel-btn accent small" data-go-room="${escapeHtml(r.id)}">GO THERE ➔</button>
+                  </div>
+                  <p>${escapeHtml(r.subtitle)}</p>
+                  <p style="color:var(--accent);margin-top:4px">${escapeHtml(roomTriggers.map((t) => t.title).join(' · '))}</p>
+                </div>
+              `;
+            })
+            .join('')}
+        </div>
+      </div>
+    `;
+
+    this.bodyEl.querySelector('#guide-open-repos').addEventListener('click', () => {
+      this.open({
+        id: 'quick-repos',
+        roomId: 'study',
+        title: 'ALL GITHUB REPOSITORIES',
+        kind: 'github_repos',
+        markerPos: [0, 1.5, 0],
+      });
+    });
+
+    this.bodyEl.querySelectorAll('[data-go-room]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        soundService.playRoomEnter();
+        if (this.onTeleportRoom) this.onTeleportRoom(btn.dataset.goRoom);
       });
     });
   }

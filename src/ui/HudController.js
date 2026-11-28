@@ -6,11 +6,26 @@ import { soundService } from '../services/soundService.js';
  * proximity interaction prompt, and performance telemetry.
  */
 export class HudController {
-  constructor(store, { onTeleportRoom, onToggleLock, onOpenTrigger, avatarModal, githubModal }) {
+  constructor(
+    store,
+    {
+      onTeleportRoom,
+      onToggleLock,
+      onOpenTrigger,
+      onOpenProjects,
+      onOpenGuide,
+      onZoom,
+      avatarModal,
+      githubModal,
+    }
+  ) {
     this.store = store;
     this.onTeleportRoom = onTeleportRoom;
     this.onToggleLock = onToggleLock;
     this.onOpenTrigger = onOpenTrigger;
+    this.onOpenProjects = onOpenProjects;
+    this.onOpenGuide = onOpenGuide;
+    this.onZoom = onZoom;
     this.avatarModal = avatarModal;
     this.githubModal = githubModal;
 
@@ -19,6 +34,10 @@ export class HudController {
       roomBadge: document.getElementById('hud-room-badge'),
       title: document.getElementById('hud-portfolio-title'),
       githubStatus: document.getElementById('hud-github-status'),
+      projectsBtn: document.getElementById('btn-projects-modal'),
+      guideBtn: document.getElementById('btn-guide-modal'),
+      zoomInBtn: document.getElementById('btn-zoom-in'),
+      zoomOutBtn: document.getElementById('btn-zoom-out'),
       envBtn: document.getElementById('btn-env-toggle'),
       envIcon: document.getElementById('env-icon'),
       envLabel: document.getElementById('env-label'),
@@ -53,6 +72,12 @@ export class HudController {
         this.onTeleportRoom(btn.dataset.room);
       });
     });
+
+    this.els.projectsBtn.addEventListener('click', () => this.onOpenProjects());
+    this.els.guideBtn.addEventListener('click', () => this.onOpenGuide());
+    this.els.zoomInBtn.addEventListener('click', () => this.onZoom(0.18));
+    this.els.zoomOutBtn.addEventListener('click', () => this.onZoom(-0.18));
+    this.els.avatarPhoto.addEventListener('click', () => this.onOpenGuide());
 
     this.els.envBtn.addEventListener('click', () => {
       soundService.playCollect();
@@ -102,6 +127,7 @@ export class HudController {
       this.els.avatarPhoto.src = targetSrc;
     }
     this.els.title.textContent = `${(gh.username || 'MOHILC').toUpperCase()}.3D`;
+    this.els.projectsBtn.textContent = `REPOS (${gh.repos.length})`;
     this.els.githubStatus.textContent =
       gh.source === 'loading'
         ? 'SYNCING GITHUB...'

@@ -13,6 +13,7 @@ import { PhysicsSystem } from './engine/PhysicsSystem.js';
 import { ROOMS } from './world/HouseData.js';
 import { HouseBuilder } from './world/HouseBuilder.js';
 import { CityBuilder } from './world/CityBuilder.js';
+import { WorldEntities } from './world/WorldEntities.js';
 import { AvatarBuilder } from './world/AvatarBuilder.js';
 import { TriggerSystem } from './world/TriggerSystem.js';
 import { WorldPopulator } from './world/WorldPopulator.js';
@@ -44,9 +45,10 @@ const atlas = createPixelTextureAtlas();
 const lightingSystem = new LightingSystem(scene, atlas.sharedMaterial);
 lightingSystem.apply(store.getState().environment.timeOfDay, true);
 
-// Build Low-Poly Flat-Shaded House, Surrounding Real-World City, Customizable Avatar, Particle Pool & Triggers
+// Build Low-Poly Flat-Shaded House, Surrounding Real-World City, Living Creatures, Avatar, Particle Pool & Triggers
 const houseBuilder = new HouseBuilder(scene, atlas);
 const cityBuilder = new CityBuilder(scene, atlas);
+const worldEntities = new WorldEntities(scene);
 const avatarBuilder = new AvatarBuilder(scene);
 avatarBuilder.rebuild(store.getState().avatar);
 avatarBuilder.setVisibleForCameraMode(store.getState().environment.cameraMode);
@@ -102,6 +104,7 @@ const drawer = new InteractiveDrawer({
   closeBtn: document.getElementById('btn-close-drawer'),
   store,
   onEmitBurst: (x, y, z) => particlePool.emitBurst(x, y, z, 14),
+  onTeleportRoom: (roomId) => teleportToRoom(roomId),
   avatarModal,
   githubModal,
 });
@@ -131,6 +134,29 @@ const hud = new HudController(store, {
     else cameraRig.lock();
   },
   onOpenTrigger: openActiveTrigger,
+  onOpenProjects: () => {
+    cameraRig.unlock();
+    drawer.open({
+      id: 'quick-repos',
+      roomId: 'study',
+      title: 'ALL GITHUB REPOSITORIES',
+      kind: 'github_repos',
+      markerPos: [avatarBuilder.root.position.x, 1.5, avatarBuilder.root.position.z],
+    });
+  },
+  onOpenGuide: () => {
+    cameraRig.unlock();
+    drawer.open({
+      id: 'world-guide',
+      roomId: 'patio',
+      title: 'PORTFOLIO GUIDE & WORLD MAP',
+      kind: 'world_guide',
+      markerPos: [avatarBuilder.root.position.x, 1.5, avatarBuilder.root.position.z],
+    });
+  },
+  onZoom: (delta) => {
+    cameraRig.setZoom(cameraRig.zoom + delta);
+  },
   avatarModal,
   githubModal,
 });
@@ -356,10 +382,11 @@ function animate() {
     store.setWorldState({ nearbyTriggerId: nextNearbyId });
   }
 
-  // Dynamic Cutaway, House Animations, City Traffic, Follow Shadow, Lighting & Pooled Particles
+  // Dynamic Cutaway, House Animations, City Traffic, Living Creatures, Follow Shadow, Lighting & Pooled Particles
   houseBuilder.updateCutaway(store.getState().environment.cameraMode, cameraRig.getYaw());
   houseBuilder.updateAnimations(elapsed, avatarBuilder.root.position, dt);
   cityBuilder.update(dt, elapsed);
+  worldEntities.update(elapsed);
   lightingSystem.setShadowCenter(physState.x, physState.z);
   lightingSystem.update(dt);
   particlePool.update(dt, store.getState().environment.timeOfDay);

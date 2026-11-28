@@ -159,6 +159,7 @@ body,
   object-fit: cover;
   image-rendering: pixelated;
   background: #0f172a;
+  cursor: pointer;
 }
 
 .hud-title {
